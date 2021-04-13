@@ -206,7 +206,7 @@ function addPoints(data) {
       extraClasses: 'fa-rotate-0',
     });
     if (!markerType.includes('circle')) {
-      marker.setIcon(icon3);
+      marker.setIcon(icon);
     }
   }
 }
