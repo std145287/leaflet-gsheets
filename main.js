@@ -8,42 +8,49 @@
 // PASTE YOUR URLs HERE
 // these URLs come from Google Sheets 'shareable link' form
 // the first is the geometry layer and the second the points
+// let geomURL =
+//   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsAyA0Hpk_-WpKyN1dfqi5IPEIC3rqEiL-uwElxJpw_U7BYntc8sDw-8sWsL87JCDU4lVg2aNi65ES/pub?output=csv';
+// let pointsURL =
+//   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQw9sVY16eQmN5TIjOH7CUaxeZnl_v6LcdE2goig1pSe9I3hipeOn1sOwmC4fS0AURefRWwcKExct/pub?output=csv';
+
 let geomURL =
    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQGswTrWwIwhz5t6f4dp4fspTu1eG5hESMieilCwDuENgPOF5ZBXmPf5-T-oXQrVh6B2shDFt5G-0p/pub?gid=0&single=true&output=csv";
     
 let pointsURL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqj5DqqX3us53zT0PM1uWiZ2-ordN1Af5bIKV8qS5wwny9dLguu5-jnq81irbl4Tbylc-ZO8FJ6M2d/pub?gid=0&single=true&output=csv";
 
-window.addEventListener("DOMContentLoaded", init);
+
+window.addEventListener('DOMContentLoaded', init);
 
 let map;
 let sidebar;
-let panelID = "my-info-panel";
+let panelID = 'my-info-panel';
 
 /*
  * init() is called when the page has loaded
  */
 function init() {
   // Create a new Leaflet map centered on the continental US
+  // map = L.map('map').setView([51.5, -0.1], 14);
   map = L.map("map").setView([40.626, 22.948], 14);
-  //map.locate({setView: true, maxZoom: 16});
+
 
   // This is the Carto Positron basemap
   L.tileLayer(
-    "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png",
+    'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png',
     {
       attribution:
         "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> &copy; <a href='http://cartodb.com/attributions'>CartoDB</a>",
-      subdomains: "abcd",
+      subdomains: 'abcd',
       maxZoom: 19,
     }
   ).addTo(map);
 
   sidebar = L.control
     .sidebar({
-      container: "sidebar",
+      container: 'sidebar',
       closeButton: true,
-      position: "right",
+      position: 'right',
     })
     .addTo(map);
 
@@ -55,7 +62,7 @@ function init() {
   };
   sidebar.addPanel(panelContent);
 
-  map.on("click", function () {
+  map.on('click', function () {
     sidebar.close(panelID);
   });
 
@@ -83,13 +90,13 @@ function addGeoms(data) {
   // Start with an empty GeoJSON of type FeatureCollection
   // All the rows will be inserted into a single GeoJSON
   let fc = {
-    type: "FeatureCollection",
+    type: 'FeatureCollection',
     features: [],
   };
 
   for (let row in data) {
     // The Sheets data has a column 'include' that specifies if that row should be mapped
-    if (data[row].include == "y") {
+    if (data[row].include == 'y') {
       let features = parseGeom(JSON.parse(data[row].geometry));
       features.forEach((el) => {
         el.properties = {
@@ -102,8 +109,8 @@ function addGeoms(data) {
   }
 
   // The geometries are styled slightly differently on mouse hovers
-  let geomStyle = { color: "#2ca25f", fillColor: "#99d8c9", weight: 2 };
-  let geomHoverStyle = { color: "green", fillColor: "#2ca25f", weight: 3 };
+  let geomStyle = { color: '#2ca25f', fillColor: '#99d8c9', weight: 2 };
+  let geomHoverStyle = { color: 'green', fillColor: '#2ca25f', weight: 3 };
 
   L.geoJSON(fc, {
     onEachFeature: function (feature, layer) {
@@ -122,9 +129,9 @@ function addGeoms(data) {
           // if this isn't added, then map.click is also fired!
           L.DomEvent.stopPropagation(e);
 
-          document.getElementById("sidebar-title").innerHTML =
+          document.getElementById('sidebar-title').innerHTML =
             e.target.feature.properties.name;
-          document.getElementById("sidebar-content").innerHTML =
+          document.getElementById('sidebar-content').innerHTML =
             e.target.feature.properties.description;
           sidebar.open(panelID);
         },
@@ -146,7 +153,7 @@ function addPoints(data) {
   // marker: standard point with an icon
   // circleMarker: a circle with a radius set in pixels
   // circle: a circle with a radius set in meters
-  let markerType = "marker";
+  let markerType = 'marker';
 
   // Marker radius
   // Wil be in pixels for circleMarker, metres for circle
@@ -155,11 +162,11 @@ function addPoints(data) {
 
   for (let row = 0; row < data.length; row++) {
     let marker;
-    if (markerType == "circleMarker") {
+    if (markerType == 'circleMarker') {
       marker = L.circleMarker([data[row].lat, data[row].lon], {
         radius: markerRadius,
       });
-    } else if (markerType == "circle") {
+    } else if (markerType == 'circle') {
       marker = L.circle([data[row].lat, data[row].lon], {
         radius: markerRadius,
       });
@@ -181,35 +188,26 @@ function addPoints(data) {
     marker.on({
       click: function (e) {
         L.DomEvent.stopPropagation(e);
-        document.getElementById("sidebar-title").innerHTML =
+        document.getElementById('sidebar-title').innerHTML =
           e.target.feature.properties.name;
-        document.getElementById("sidebar-content").innerHTML =
+        document.getElementById('sidebar-content').innerHTML =
           e.target.feature.properties.description;
         sidebar.open(panelID);
       },
     });
     // COMMENT UNTIL HERE TO DISABLE SIDEBAR FOR THE MARKERS
 
-    // Custom Icon 
-    let icon = L.icon({
-      iconUrl: './pic/church-map-icon.png',
-      iconSize: [60, 60] // size of the icon
+    // AwesomeMarkers is used to create fancier icons
+    let icon = L.AwesomeMarkers.icon({
+      icon: 'info-circle',
+      iconColor: 'white',
+      markerColor: data[row].color,
+      prefix: 'fa',
+      extraClasses: 'fa-rotate-0',
     });
-    
-    marker.setIcon(icon);
-    
-    // AwesomeMarkers is used to create fancier icon 
-    // let icon = L.AwesomeMarkers.icon({
-    //  icon: "info-circle",
-    //  iconColor: "white",
-    //  markerColor: data[row].color,
-    //  prefix: "fa",
-    //  extraClasses: "fa-rotate-0",
-    //});
-    //if (!markerType.includes("circle")) {
-    //  marker.setIcon(icon);
-    //}
-     
+    if (!markerType.includes('circle')) {
+      marker.setIcon(icon);
+    }
   }
 }
 
@@ -220,32 +218,32 @@ function addPoints(data) {
  */
 function parseGeom(gj) {
   // FeatureCollection
-  if (gj.type == "FeatureCollection") {
+  if (gj.type == 'FeatureCollection') {
     return gj.features;
   }
 
   // Feature
-  else if (gj.type == "Feature") {
+  else if (gj.type == 'Feature') {
     return [gj];
   }
 
   // Geometry
-  else if ("type" in gj) {
-    return [{ type: "Feature", geometry: gj }];
+  else if ('type' in gj) {
+    return [{ type: 'Feature', geometry: gj }];
   }
 
   // Coordinates
   else {
     let type;
-    if (typeof gj[0] == "number") {
-      type = "Point";
-    } else if (typeof gj[0][0] == "number") {
-      type = "LineString";
-    } else if (typeof gj[0][0][0] == "number") {
-      type = "Polygon";
+    if (typeof gj[0] == 'number') {
+      type = 'Point';
+    } else if (typeof gj[0][0] == 'number') {
+      type = 'LineString';
+    } else if (typeof gj[0][0][0] == 'number') {
+      type = 'Polygon';
     } else {
-      type = "MultiPolygon";
+      type = 'MultiPolygon';
     }
-    return [{ type: "Feature", geometry: { type: type, coordinates: gj } }];
+    return [{ type: 'Feature', geometry: { type: type, coordinates: gj } }];
   }
 }
