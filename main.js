@@ -199,7 +199,7 @@ function addPoints(data) {
     
     // AwesomeMarkers is used to create fancier icons
     let icon = L.AwesomeMarkers.icon({
-      icon: 'church',
+      icon: 'cross',
       iconColor: 'white',
       markerColor: data[row].color,
       prefix: 'fa',
