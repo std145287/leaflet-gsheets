@@ -196,23 +196,18 @@ function addPoints(data) {
       },
     });
     // COMMENT UNTIL HERE TO DISABLE SIDEBAR FOR THE MARKERS
-
-    let icon3 = L.icon({
-      iconUrl: './pic/church-map-icon.png',
-      iconSize: [60, 60], // size of the icon
-    });
     
     // AwesomeMarkers is used to create fancier icons
-    //let icon = L.AwesomeMarkers.icon({
-    //  icon: 'info-circle',
-    //  iconColor: 'white',
-    //  markerColor: data[row].color,
-    //  prefix: 'fa',
-    //  extraClasses: 'fa-rotate-0',
-    //});
-    //if (!markerType.includes('circle')) {
+    let icon = L.AwesomeMarkers.icon({
+      icon: 'church',
+      iconColor: 'white',
+      markerColor: data[row].color,
+      prefix: 'fa',
+      extraClasses: 'fa-rotate-0',
+    });
+    if (!markerType.includes('circle')) {
       marker.setIcon(icon3);
-    //}
+    }
   }
 }
 
