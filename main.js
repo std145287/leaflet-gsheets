@@ -32,7 +32,7 @@ let panelID = 'my-info-panel';
 function init() {
   // Create a new Leaflet map centered on the continental US
   // map = L.map('map').setView([51.5, -0.1], 14);
-  map = L.map("map").setView([40.626, 22.948], 14);
+  map = L.map("map").setView([40.626, 22.948], 13);
 
 
   // This is the Carto Positron basemap
@@ -45,6 +45,9 @@ function init() {
       maxZoom: 19,
     }
   ).addTo(map);
+   
+  // Εντοπίζει τη θέση μας
+   map.locate({setView: true, maxZoom: 13});
 
   sidebar = L.control
     .sidebar({
