@@ -20,6 +20,9 @@ let map;
 let sidebar;
 let panelID = 'my-info-panel';
 
+var myPosition;
+var pointsDistance;
+
 /*
  * init() is called when the page has loaded
  */
@@ -41,7 +44,22 @@ function init() {
   ).addTo(map);
    
   // Εντοπίζει τη θέση μας
-   map.locate({setView: true, maxZoom: 13});
+  //map.locate({setView: true, maxZoom: 12});
+  map.locate({setView: true, watch: true, maxZoom: 12})
+  .on('locationfound', function(e){
+      var current = L.marker([e.latitude, e.longitude]);
+      myPosition = current.getLatLng();
+      // console.log("from "+myPosition);
+
+      loadPoints();
+  })
+ .on('locationerror', function(e){
+      console.log(e);
+      alert("Location access denied.");
+  });
+
+ 
+
 
   sidebar = L.control
     .sidebar({
@@ -65,16 +83,18 @@ function init() {
 
   // Use PapaParse to load data from Google Sheets
   // And call the respective functions to add those to the map.
-  Papa.parse(geomURL, {
-    download: true,
-    header: true,
-    complete: addGeoms,
-  });
-  Papa.parse(pointsURL, {
-    download: true,
-    header: true,
-    complete: addPoints,
-  });
+  function loadPoints() {
+    Papa.parse(geomURL, {
+      download: true,
+      header: true,
+      complete: addGeoms,
+    });
+    Papa.parse(pointsURL, {
+      download: true,
+      header: true,
+      complete: addPoints,
+    });
+  }
 }
 
 /*
@@ -169,8 +189,16 @@ function addPoints(data) {
       });
     } else {
       marker = L.marker([data[row].lat, data[row].lon]);
+      markerLatLng = marker.getLatLng();
+      console.log("markerLatLng "+ markerLatLng);
+      pointsDistance = (myPosition.distanceTo(markerLatLng)).toFixed(0);
+      console.log(pointsDistance + " m");
     }
-    marker.addTo(pointGroupLayer);
+
+    if(pointsDistance < 20000) {
+      marker.addTo(pointGroupLayer);
+    }
+    
 
     // UNCOMMENT THIS LINE TO USE POPUPS
     //marker.bindPopup('<h2>' + data[row].name + '</h2>There's a ' + data[row].description + ' here');
