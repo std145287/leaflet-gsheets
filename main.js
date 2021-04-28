@@ -8,17 +8,11 @@
 // PASTE YOUR URLs HERE
 // these URLs come from Google Sheets 'shareable link' form
 // the first is the geometry layer and the second the points
-// let geomURL =
-//   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsAyA0Hpk_-WpKyN1dfqi5IPEIC3rqEiL-uwElxJpw_U7BYntc8sDw-8sWsL87JCDU4lVg2aNi65ES/pub?output=csv';
-// let pointsURL =
-//   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQw9sVY16eQmN5TIjOH7CUaxeZnl_v6LcdE2goig1pSe9I3hipeOn1sOwmC4fS0AURefRWwcKExct/pub?output=csv';
 
 let geomURL =
-   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQGswTrWwIwhz5t6f4dp4fspTu1eG5hESMieilCwDuENgPOF5ZBXmPf5-T-oXQrVh6B2shDFt5G-0p/pub?gid=0&single=true&output=csv";
-    
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSvqv0XqIPn4ok1C_RFh_JDFoYvT6oJhEwAxly0ztNeQvbwg6AWUu1q1CbhkUaZz-O_bGbWzD5W-5rP/pub?output=csv";
 let pointsURL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqj5DqqX3us53zT0PM1uWiZ2-ordN1Af5bIKV8qS5wwny9dLguu5-jnq81irbl4Tbylc-ZO8FJ6M2d/pub?gid=0&single=true&output=csv";
-
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFzoqpyDM1naHwiwOmk0xzOatxCqBGZ78hK0a6EIUbhsgM4fkInyZFlEut8bX85q_xB_H-iCuBkdHQ/pub?output=csv";
 
 window.addEventListener('DOMContentLoaded', init);
 
