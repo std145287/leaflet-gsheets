@@ -203,10 +203,10 @@ function addPoints(data) {
       extraClasses: 'fa-rotate-0',
     });
     
-//     let customIcon = L.icon({
-//       iconUrl: './pic/church-map-icon.png',
-//       iconSize: [60, 60]
-//     });
+    let customIcon = L.icon({
+      iconUrl: './pic/church-map-icon.png',
+      iconSize: [60, 60]
+    });
      
     
     if (!markerType.includes('circle')) {
